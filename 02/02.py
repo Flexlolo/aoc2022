@@ -1,26 +1,15 @@
 from lsm.aoc import get_input
 
-def solve(lines, part2: bool):
-	score = 0
+score = [0, 0]
 
-	for line in lines:
-		elf, you = line.split(' ')
-		
-		elf = 'ABC'.index(elf)
-		result = you = 'XYZ'.index(you)
+for line in get_input('input', day=2, year=2022).splitlines():
+	p1, p2 = map(lambda x: 'ABCXYZ'.index(x) % 3, line.split(' '))
+	ds = [
+		(p2 - p1 + 1) % 3 * 3 + (p2 + 1), 
+		p2 * 3 + (p1 - (1 - p2)) % 3 + 1
+	]
+	
+	score = list(map(lambda x, y: x + y, score, ds))
 
-		if part2:
-			outcomes = ((elf - 1) % 3, elf, (elf + 1) % 3)
-			you = outcomes[result]
-		else:
-			outcomes = (you == (elf - 1) % 3, elf == you, you == (elf + 1) % 3)
-			result = outcomes.index(True)
-
-		score += (result * 3) + you + 1
-
-	return score
-
-lines = get_input('input', day=2, year=2022).splitlines()
-
-print('PART 1:', solve(lines, False))
-print('PART 2:', solve(lines, True))
+print('PART 1:', score[0])
+print('PART 2:', score[1])
