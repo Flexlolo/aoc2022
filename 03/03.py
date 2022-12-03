@@ -1,7 +1,7 @@
 from lsm.aoc import get_input
 from string import ascii_lowercase
 
-lines = get_input('input', day=3, year=2022).splitlines()
+lines = get_input().splitlines()
 
 priority = ascii_lowercase + ascii_lowercase.upper()
 total = 0
@@ -13,7 +13,6 @@ for line in lines:
 	total += priority.index(common) + 1
 
 print('PART 1:', total)
-
 
 total = 0
 for i in range(0, len(lines), 3):

@@ -2,7 +2,7 @@ from lsm.aoc import get_input
 
 score = [0, 0]
 
-for line in get_input('input', day=2, year=2022).splitlines():
+for line in get_input().splitlines():
 	p1, p2 = map(lambda x: 'ABCXYZ'.index(x) % 3, line.split(' '))
 	ds = [
 		(p2 - p1 + 1) % 3 * 3 + (p2 + 1), 

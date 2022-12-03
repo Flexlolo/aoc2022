@@ -3,7 +3,7 @@ from lsm.aoc import get_input
 calories = []
 total = 0
 
-for line in get_input(day=1, year=2022).splitlines():
+for line in get_input().splitlines():
 	if line:
 		total += int(line)
 	else:
