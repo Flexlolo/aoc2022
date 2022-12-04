@@ -8,7 +8,7 @@ for line in get_input().splitlines():
 		(p2 - p1 + 1) % 3 * 3 + (p2 + 1), 
 		p2 * 3 + (p1 - (1 - p2)) % 3 + 1
 	]
-	
+
 	score = list(map(lambda x, y: x + y, score, ds))
 
 print('PART 1:', score[0])
