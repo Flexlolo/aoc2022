@@ -6,47 +6,25 @@ task = get_input()
 config, instructions = task.split('\n\n')
 config = config.splitlines()[:-1]
 
-qwto = []
+stacks = [[line[i] for i in range(1, len(line), 4)] for line in config]
+stacks = [*zip(*stacks)]
+stacks = [[i for i in stack if i != ' '] for stack in stacks]
+
+state = [deepcopy(stacks) for part in range(2)]
 
 for instruction in instructions.splitlines():
 	m = re.match(r'move (\d+) from (\d+) to (\d+)', instruction)
 	q, w, to = int(m.group(1)), int(m.group(2)), int(m.group(3))
-	qwto.append((q, w, to))
 
-
-def read_line(line: str) -> list[str]:
-	items = []
-	i = 0
-
-	while i < len(line):
-		item = line[i + 1]
-
-		if item != ' ':
-			items.append(item)
-		else:
-			items.append(None)
-
-		i += 4
-
-	return items
-
-stacks = [*zip(*[read_line(line) for line in config])]
-stacks = [[i for i in stack if i is not None] for stack in stacks]
-
-def solve(stacks: list[str], part2: bool) -> str:
-	stacks = deepcopy(stacks)
-
-	for (q, w, to) in qwto:
-		if part2:
+	for part in range(2):
+		if part:
 			for i in range(q-1, -1, -1):
-				stacks[to - 1].insert(0, stacks[w - 1].pop(i))
-
+				state[part][to - 1].insert(0, state[part][w - 1].pop(i))
 		else:
 			for i in range(q):
-				stacks[to - 1].insert(0, stacks[w - 1].pop(0))
+				state[part][to - 1].insert(0, state[part][w - 1].pop(0))
 
-	return ''.join([stack[0] for stack in stacks])
+state = [''.join([s[0] for s in st]) for st in state]
 
-
-print('PART 1:', solve(stacks, False))
-print('PART 2:', solve(stacks, True))
+print('PART 1:', state[0])
+print('PART 2:', state[1])
