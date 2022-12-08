@@ -35,17 +35,17 @@ def scenic_score(point) -> int:
 
 	return score
 
-invisible = 0
+visible = 0
 best_score = 0
 
 for point in product(range(SIZE), range(SIZE)):
-	if not is_visible(point):
-		invisible += 1
+	if is_visible(point):
+		visible += 1
 
 	score = scenic_score(point)
 
 	if score > best_score:
 		best_score = score
 
-print('PART 1:', SIZE * SIZE - invisible)
+print('PART 1:', visible)
 print('PART 2:', best_score)
