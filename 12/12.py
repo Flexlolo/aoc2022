@@ -1,82 +1,59 @@
 from lsm.aoc import get_input
 
 
-class Node:
+DIRECTIONS = ((1, 0), (-1, 0), (0, 1), (0, -1))
 
-	def __init__(self, position: tuple[int, int], value: int):
-		self.position = position
-		self.value = value
-		self.edges = []
-
-	def __str__(self):
-		return f'NODE <{self.position}> {chr(self.value)}'
-
-	__repr__ = __str__
-
+start = (-1, -1)
+end = (-1, -1)
 nodes = {}
-path = {}
 
 for y, line in enumerate(get_input().splitlines()):
 	for x, char in enumerate(line):
 		position = (x, y)
 
 		if char == 'S':
-			path['S'] = position
+			start = position
 			char = 'a'
 		elif char == 'E':
-			path['E'] = position
+			end = position
 			char = 'z'
 
-		node = Node(position, ord(char))
-		nodes[position] = node
+		nodes[position] = ord(char)
 
-DIRECTIONS = ((1, 0), (-1, 0), (0, 1), (0, -1))
-
-for position, node in nodes.items():
-	for direction in DIRECTIONS:
-		neighbour = tuple(position[i] + direction[i] for i in range(2))
-
-		if neighbour in nodes:
-			nnode = nodes[neighbour]
-			elevation = nnode.value - node.value
-
-			if elevation > 1:
-				continue
-
-			node.edges.append(nnode)
-
-path['S'] = nodes[path['S']]
-path['E'] = nodes[path['E']]
-
-nodes = list(nodes.values())
-
-def bfs(nodes, start, end):
+def solve(part2: bool):
 	seen = set()
-	queue = [(start, 0)]
+	
+	if part2:
+		queue = [(end, 0)]
+	else:
+		queue = [(start, 0)]
 
 	while queue:
-		(node, distance) = queue.pop(0)
+		position, distance = queue.pop(0)
 
-		if node in seen:
+		if position in seen:
 			continue
+
+		seen.add(position)
+
+		if part2:
+			if nodes[position] == ord('a'):
+				return distance
 		else:
-			seen.add(node)
+			if position == end:
+				return distance
 
-		if node == end:
-			return distance
+		for direction in DIRECTIONS:
+			neighbour = tuple(position[i] + direction[i] for i in range(2))
 
-		for adj in node.edges:
-			queue.append((adj, distance + 1))
+			if neighbour in nodes and neighbour not in seen:
+				if part2:
+					if nodes[position] - nodes[neighbour] < 2:
+						queue.append((neighbour, distance + 1))
 
-distances = {}
+				else:
+					if nodes[neighbour] - nodes[position] < 2:
+						queue.append((neighbour, distance + 1))
 
-for start in nodes:
-	if start.value == 97:
-		distance = bfs(nodes, start, path['E'])
-
-		if distance:
-			distances[start] = distance
-
-
-print('PART 1:', distances[path['S']])
-print('PART 2:', min(distances.values()))
+print('PART 1:', solve(False))
+print('PART 2:', solve(True))
