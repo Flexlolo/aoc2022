@@ -1,6 +1,7 @@
 from lsm.aoc import get_input
 from functools import cmp_to_key, reduce
 from copy import deepcopy
+import json
 
 def compare(p1, p2):
 	packets = [p1, p2]
@@ -41,7 +42,7 @@ dividers = [
 all_packets = deepcopy(dividers)
 
 for i, group in enumerate(get_input().split('\n\n')):
-	packets = [eval(line) for line in group.splitlines()]
+	packets = [json.loads(line) for line in group.splitlines()]
 
 	for packet in packets:
 		all_packets.append(packet)
