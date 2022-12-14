@@ -38,7 +38,7 @@ for line in get_input().splitlines():
 			p = points[i] + step * j
 			grid[p] = '#'
 
-def simulate(grid, borders, sand, part2) -> bool:
+def simulate(grid, borders, sand, last_path, part2) -> bool:
 	# part 2 exit
 	if sand_source in sand:
 		return False
@@ -51,8 +51,14 @@ def simulate(grid, borders, sand, part2) -> bool:
 
 		return True
 
-	# start pos from source
-	pos = Vector(sand_source)
+	if last_path:
+		last_path.pop(-1)
+
+	if last_path:
+		pos = last_path[-1]
+	else:
+		# start pos from source
+		pos = Vector(sand_source)
 
 	# part 2 infinity floor line
 	floor = borders['max'][1] + 2
@@ -72,6 +78,7 @@ def simulate(grid, borders, sand, part2) -> bool:
 				continue
 
 			pos = pos_new
+			last_path.append(pos)
 			moved = True
 			break
 
@@ -83,8 +90,9 @@ def simulate(grid, borders, sand, part2) -> bool:
 
 for part in range(1, 3):
 	sand = {}
+	last_path = []
 
-	while simulate(grid, borders, sand, part == 2):
+	while simulate(grid, borders, sand, last_path, part == 2):
 		continue
 
 	print(f'PART {part}: {len(sand)}')
