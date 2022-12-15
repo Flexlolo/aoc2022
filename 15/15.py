@@ -1,4 +1,4 @@
-from lsm.aoc import get_input
+from lsm.aoc import get_input, get_input_filename
 from lsm.aoc.vector import Vector
 import re
 
@@ -36,18 +36,14 @@ def check_row(row: int, part2: bool) -> int:
 	for (s, b, v) in lines:
 		if (s[1] <= row and s[1] + v.mlength >= row) or (s[1] > row and s[1] - v.mlength <= row):
 			ds = v.mlength - abs(s[1] - row)
-			# print(f'{p=}, {ds=}')
 			coverage.append([s[0] - ds, s[0] + ds])
 
 	intervals = merge_intervals(coverage)
 
 	if part2:
 		if len(intervals) > 1:
-			# print(f'{row=} {intervals=}')
-
 			for i in range(len(intervals) - 1):
 				gap = intervals[i + 1][0] - intervals[i][1]
-				# print(f'{gap=}')
 
 				if gap > 1:
 					return intervals[i][1] + 1
@@ -62,8 +58,8 @@ def check_row(row: int, part2: bool) -> int:
 
 		return total
 
-row_middle = 10
-row_middle = 2_000_000
+row_middle = {'test': 10, 'input': 2_000_000}
+row_middle = row_middle[get_input_filename()]
 
 print('PART 1:', check_row(row_middle, False))
 
