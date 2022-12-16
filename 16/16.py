@@ -139,7 +139,7 @@ def solve(time_limit: int, workers_count: int = 1, options_max: int = 3, step = 
 
 			return cache[cache_entry]
 
-	results = []
+	result = 0
 	queue_changed = False
 
 	for worker in range(workers_count):
@@ -160,7 +160,7 @@ def solve(time_limit: int, workers_count: int = 1, options_max: int = 3, step = 
 
 		# print(options)
 		for i, (valve, (time_to_open, pressure)) in enumerate(sorted(options.items(), key=lambda x:x[1][1], reverse=True)):
-			if i >= options_max:
+			if i >= options_max - time_spent[worker] // 2:
 				break
 # 
 			# print(f'CONSIDERING {i + 1}: {pressure}')
@@ -174,16 +174,16 @@ def solve(time_limit: int, workers_count: int = 1, options_max: int = 3, step = 
 			branch['pressure_total'] += pressure
 
 			r = solve(time_limit=time_limit, workers_count=workers_count, options_max=options_max, step=branch)
-			results.append(r)
+
+			if r > result:
+				result = r
 
 
-	if results:
-		results = sorted(results)
-
+	if result:
 		for cache_entry in cache_entries:
-			cache[cache_entry] = results[-1]
+			cache[cache_entry] = result
 
-		return results[-1]
+		return result
 	else:
 		return pressure_total
 
