@@ -11,7 +11,7 @@ for line in get_input().splitlines():
 	b = Vector(int(m.group(3)), int(m.group(4)))
 	v = b - s
 
-	lines.append((s, b, v))
+	lines.append((tuple(s), tuple(b), v.mlength))
 
 # https://www.geeksforgeeks.org/merging-intervals/
 def merge_intervals(intervals) -> int:
@@ -33,9 +33,9 @@ def check_row(row: int, part2: bool) -> int:
 	if row % 10_000 == 0:
 		print('checking row', row)
 
-	for (s, b, v) in lines:
-		if (s[1] <= row and s[1] + v.mlength >= row) or (s[1] > row and s[1] - v.mlength <= row):
-			ds = v.mlength - abs(s[1] - row)
+	for (s, b, mlength) in lines:
+		if (s[1] <= row and s[1] + mlength >= row) or (s[1] > row and s[1] - mlength <= row):
+			ds = mlength - abs(s[1] - row)
 			coverage.append([s[0] - ds, s[0] + ds])
 
 	intervals = merge_intervals(coverage)
