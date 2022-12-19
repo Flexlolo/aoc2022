@@ -8,7 +8,7 @@ grid = {}
 sand_source = Vector(500, 0)
 
 # we use borders to check if sand goes to infinity in part 1
-borders = {'min': [*sand_source], 'max': [*sand_source]}
+borders = {'min': sand_source.copy(), 'max': sand_source.copy()}
 
 for line in get_input().splitlines():
 	# build list of points from line
@@ -58,7 +58,7 @@ def simulate(grid, borders, sand, last_path, part2) -> bool:
 		pos = last_path[-1]
 	else:
 		# start pos from source
-		pos = Vector(sand_source)
+		pos = sand_source.copy()
 
 	# part 2 infinity floor line
 	floor = borders['max'][1] + 2
