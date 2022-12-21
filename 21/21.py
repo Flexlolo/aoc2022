@@ -2,15 +2,6 @@ from lsm.aoc import get_input
 from copy import deepcopy
 import re
 
-ops = {
-	'+': lambda x,y: x + y,
-	'-': lambda x,y: x - y,
-	'*': lambda x,y: x * y,
-	'/': lambda x,y: x // y
-}
-
-monkeys = {}
-
 class HUMN:
 
 	def __init__(self):
@@ -44,6 +35,14 @@ class HUMN:
 
 	__repr__ = __str__
 
+ops = {
+	'+': lambda x,y: x + y,
+	'-': lambda x,y: x - y,
+	'*': lambda x,y: x * y,
+	'/': lambda x,y: x // y
+}
+
+monkeys = {}
 
 for line in get_input().splitlines():
 	if (m := re.match(r'(\S+): (\d+)', line)):
@@ -51,7 +50,6 @@ for line in get_input().splitlines():
 
 	if (m := re.match(r'(\S+): (\S+) ([\+\-\*\/]) (\S+)', line)):
 		monkeys[m.group(1)] = (m.group(2), m.group(4), m.group(3))
-
 
 def solve(monkeys, name, part2):
 	if isinstance(monkeys[name], int):
