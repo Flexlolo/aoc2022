@@ -10,7 +10,7 @@ bounds = [0, 0]
 start = None
 
 # read grid
-grid_input, instructions = get_input(day=22, year=2022).split('\n\n')
+grid_input, instructions = get_input().split('\n\n')
 
 for y, line in enumerate(grid_input.splitlines()):
 	for x, c in enumerate(line):
